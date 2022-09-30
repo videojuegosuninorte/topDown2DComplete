@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private Grid grid;
     private bool changedCells = false;
     private Rigidbody2D rb;
+    private int HP;
 
     // Index of current waypoint from which Enemy walks
     // to the next one
@@ -28,10 +29,9 @@ public class Player : MonoBehaviour
     }
 
 
-
     public void starMoving(Grid grid, float speed)
     {
-        
+        HP = 4000;
         this.grid = grid;
         calculatePath();
         startMoving = true;
@@ -55,6 +55,20 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Made it");
             path = null;
+        }
+
+        // Debug.Log("Hit");
+        if (collision.gameObject.tag == "Bullet")
+        {
+
+            HP -= 20;
+            //Debug.Log("Hit by a bullet, new HP "+ HP);
+            Destroy(collision.gameObject);
+            if (HP < 0)
+            {
+                Destroy(this.gameObject);
+                
+            }
         }
     }
 

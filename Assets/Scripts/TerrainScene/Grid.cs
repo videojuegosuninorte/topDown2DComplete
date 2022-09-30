@@ -66,6 +66,11 @@ public class Grid : ScriptableObject
         return width;
     }
 
+    public void SetWalkable(Vector3 position, bool value)
+    {
+        gridArray[(int)position.x, (int)position.y].SetWalkable(value);
+    }
+
     public void setBusyCell(int initialX,int initialY, int newX, int newY)
     {
         gridArray[initialX, initialY].SetWalkable(true);

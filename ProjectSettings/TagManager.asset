@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PowerSource
   - Bullet
+  - Tower
   layers:
   - Default
   - TransparentFX
