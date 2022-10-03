@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 2299624687026295009}
-  bulletPrefab: {fileID: 7485509747269389125, guid: 2368e05c83ff94e579a141c41c3e773a, type: 3}
+  bulletPrefab: {fileID: 7485509747269389125, guid: 4f80d9373ba03854ab817b3c56f094ca, type: 3}
   bulletForce: 20
   shootingInterval: 0.3
 --- !u!1 &4641202538481310363

@@ -28,37 +28,37 @@ public class BoardManager : MonoBehaviour
 
         PathManager.Instance.powerUnitLocation = new Vector2Int(5, 19);
 
-        Tower tower = Instantiate(TowerPrefab, new Vector2(2, 17), Quaternion.identity);
+        //Tower tower = Instantiate(TowerPrefab, new Vector2(2, 17), Quaternion.identity);
 
-        tower.SetGrid(grid);
+        //tower.SetGrid(grid);
 
-        tower = Instantiate(TowerPrefab, new Vector2(7, 17), Quaternion.identity);
+        //tower = Instantiate(TowerPrefab, new Vector2(7, 17), Quaternion.identity);
 
-        tower.SetGrid(grid);
+        //tower.SetGrid(grid);
 
-
+        
 
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
 
-        player.starMoving(grid, 2);
+        player.starMoving(grid, 4);
 
-        player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
+        //player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
 
-        player.starMoving(grid, 3);
+        //player.starMoving(grid, 3);
 
-        player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
+        //player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
 
-        player.starMoving(grid, 3);
-
-
-        player = Instantiate(PlayerPrefab, new Vector2(6, 0), Quaternion.identity);
-
-        player.starMoving(grid, 3);
+        //player.starMoving(grid, 3);
 
 
-        player = Instantiate(PlayerPrefab, new Vector2(6, 6), Quaternion.identity);
+        //player = Instantiate(PlayerPrefab, new Vector2(6, 0), Quaternion.identity);
 
-        player.starMoving(grid, 3);
+        //player.starMoving(grid, 3);
+
+
+        //player = Instantiate(PlayerPrefab, new Vector2(6, 6), Quaternion.identity);
+
+        //player.starMoving(grid, 3);
 
     }
 }

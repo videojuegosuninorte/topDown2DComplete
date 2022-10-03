@@ -17,7 +17,7 @@ public class PowerSource : MonoBehaviour
         {
             
             HP -= 20;
-            //Debug.Log("Hit by a bullet, new HP "+ HP);
+            //Debug.Log("Power source Hit by a bullet, new HP "+ HP);
             Destroy(collision.gameObject);
             if (HP < 0)
             {

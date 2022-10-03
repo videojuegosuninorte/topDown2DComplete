@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         }
 
         // Debug.Log("Hit");
-        if (collision.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "EnemyBullet")
         {
 
             HP -= 20;
