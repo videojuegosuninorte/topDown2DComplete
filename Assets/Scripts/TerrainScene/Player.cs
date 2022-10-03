@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
 
             if (changedCells) {
                 changedCells = false;
-                if (!grid.isWalkable((int)path[waypointIndex].transform.position.x, (int)path[waypointIndex].transform.position.y))
+                if (!grid.isWalkable((int)path[waypointIndex].transform.localPosition.x, (int)path[waypointIndex].transform.localPosition.y))
                 {
                     //Debug.Log("not walkable");
                     //path = null;
@@ -91,10 +91,10 @@ public class Player : MonoBehaviour
                     return;
                 } else
                 {
-                    grid.setBusyCell((int)path[waypointIndex - 1].transform.position.x,
-                        (int)path[waypointIndex - 1].transform.position.y,
-                        (int)path[waypointIndex].transform.position.x,
-                        (int)path[waypointIndex].transform.position.y);
+                    grid.setBusyCell((int)path[waypointIndex - 1].transform.localPosition.x,
+                        (int)path[waypointIndex - 1].transform.localPosition.y,
+                        (int)path[waypointIndex].transform.localPosition.x,
+                        (int)path[waypointIndex].transform.localPosition.y);
                 }
                 
             }

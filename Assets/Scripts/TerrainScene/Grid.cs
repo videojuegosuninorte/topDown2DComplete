@@ -39,7 +39,7 @@ public class Grid : ScriptableObject
                 var p = new Vector2(i+parentTransform.position.x, j+parentTransform.position.y) * cellSize;
                 cell = Instantiate(cellPrefab, p, Quaternion.identity);
                 //cell.transform.SetParent(parent.transform);
-                cell.Init(this, (int)i, (int)j, true);
+                cell.Init(this, i, j, true);
 
                 cell.transform.SetParent(parentTransform);
 
