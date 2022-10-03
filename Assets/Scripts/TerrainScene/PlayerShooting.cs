@@ -24,13 +24,13 @@ public class PlayerShooting : MonoBehaviour
         if (collision.gameObject.tag == "PowerSource")
         {
             startShotting = true;
-            lookAtTarget();
+            lookAtTarget(collision.gameObject.transform.position);
         }
     }
 
-    public void lookAtTarget()
+    public void lookAtTarget(Vector3 targetPosition)
     {
-        Vector2 lookDir = PathManager.Instance.powerUnitLocation - rb.position;
+        Vector2 lookDir = new Vector2(targetPosition.x, targetPosition.y) - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
         rb.rotation = angle;
     }

@@ -22,7 +22,7 @@ public class PowerSource : MonoBehaviour
             if (HP < 0)
             {
                 Destroy(this.gameObject);
-                GameManager.Instance.UpdateGameState(GameManager.GameStateEnum.end);
+                //GameManager.Instance.UpdateGameState(GameManager.GameStateEnum.end);
             }
         }
     }

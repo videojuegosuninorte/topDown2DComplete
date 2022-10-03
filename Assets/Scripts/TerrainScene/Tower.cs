@@ -19,6 +19,6 @@ public class Tower : MonoBehaviour
 
     public void SetGrid(Grid grid)
     {
-        grid.SetWalkable(transform.position, false);
+        grid.SetWalkable(transform.localPosition, false);
     }
 }

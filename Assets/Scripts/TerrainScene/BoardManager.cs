@@ -5,42 +5,46 @@ using DG.Tweening;
 
 public class BoardManager : MonoBehaviour
 {
-    public static BoardManager Instance;
     [SerializeField] private Cell CellPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private PowerSource PowerSourcePrefab;
     [SerializeField] private Tower TowerPrefab;
     private Grid grid;
     private Player player;
-    [SerializeField]
-    private float moveSpeed = 2f;
 
     private void Awake()
     {
-        Instance = this;
+        SetupBoard();
     }
 
     public void SetupBoard()
     {
-        grid = new Grid(11, 20, 1, CellPrefab);
+        grid = new Grid(11, 20, 1, CellPrefab, transform);
 
-        Instantiate(PowerSourcePrefab, new Vector2(5, 19), Quaternion.identity);
+        PowerSource powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
+        powerSource.transform.SetParent(transform);
 
-        PathManager.Instance.powerUnitLocation = new Vector2Int(5, 19);
+        PathManager pathManager = new PathManager();
 
-        //Tower tower = Instantiate(TowerPrefab, new Vector2(2, 17), Quaternion.identity);
+        pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        //tower.SetGrid(grid);
+        Tower tower = Instantiate(TowerPrefab, new Vector2(2+transform.position.x, 17+transform.position.y), Quaternion.identity);
+
+        tower.transform.SetParent(transform);
+
+        tower.SetGrid(grid);
 
         //tower = Instantiate(TowerPrefab, new Vector2(7, 17), Quaternion.identity);
 
         //tower.SetGrid(grid);
 
-        
 
-        player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
 
-        player.starMoving(grid, 4);
+        player = Instantiate(PlayerPrefab, new Vector2(0+transform.position.x, 0+transform.position.y), Quaternion.identity);
+
+        player.transform.SetParent(transform);
+
+        player.starMoving(grid, 4, pathManager);
 
         //player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
 

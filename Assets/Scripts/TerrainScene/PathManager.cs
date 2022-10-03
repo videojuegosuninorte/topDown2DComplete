@@ -8,21 +8,15 @@ public class PathManager : MonoBehaviour
 {
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
-    public static PathManager Instance;
     private List<Cell> openList;
     private List<Cell> closedList;
     public Vector2Int powerUnitLocation;
     private Grid grid;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
 
     public List<Cell> FindPath(Grid grid, int startx, int starty)
     {
-        //Debug.Log("Find path from " + startx + " " + starty);
+        Debug.Log("Find path from " + startx + " " + starty + " "+ powerUnitLocation.x+ " "+powerUnitLocation.y);
         return FindPath(grid, startx, starty, powerUnitLocation.x, powerUnitLocation.y);
     }
 
@@ -118,6 +112,7 @@ public class PathManager : MonoBehaviour
     private List<Cell> GetNeighbourList(Cell currentNode)
     {
         List<Cell> neighbourList = new List<Cell>();
+        Debug.Log("GetNeighbourList " + currentNode.x + " " + currentNode.y);
 
         if (currentNode.x - 1 >= 0)
         {
@@ -147,6 +142,7 @@ public class PathManager : MonoBehaviour
 
     public Cell GetNode(int x, int y)
     {
+        Debug.Log("GetNode " + x + " " + y);
         return grid.GetGridObject(x, y);
     }
 

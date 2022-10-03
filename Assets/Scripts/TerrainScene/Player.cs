@@ -9,12 +9,13 @@ public class Player : MonoBehaviour
     List<Cell> path;
     [SerializeField]
     private float moveSpeed = 2f;
-    public Vector2 GetPosition => transform.position;
+    public Vector2 GetPosition => transform.localPosition;
     private bool startMoving = false;
     private Grid grid;
     private bool changedCells = false;
     private Rigidbody2D rb;
     private int HP;
+    private PathManager pathManager;
 
     // Index of current waypoint from which Enemy walks
     // to the next one
@@ -29,10 +30,11 @@ public class Player : MonoBehaviour
     }
 
 
-    public void starMoving(Grid grid, float speed)
+    public void starMoving(Grid grid, float speed, PathManager path)
     {
         HP = 4000;
         this.grid = grid;
+        this.pathManager = path;
         calculatePath();
         startMoving = true;
         moveSpeed = speed;
@@ -41,12 +43,7 @@ public class Player : MonoBehaviour
     private void calculatePath()
     {
         waypointIndex = 0;
-        path = PathManager.Instance.FindPath(grid, (int)GetPosition.x, (int)GetPosition.y);
-    }
-
-    public void ResetPosition()
-    {
-        transform.position = new Vector2(0, 0);
+        path = pathManager.FindPath(grid, (int)GetPosition.x, (int)GetPosition.y);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
