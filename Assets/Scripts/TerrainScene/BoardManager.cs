@@ -41,25 +41,6 @@ public class BoardManager : MonoBehaviour
         //player.starMoving(grid, 4, pathManager);
 
         setRandomPlayers(5, pathManager);
-
-        //player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
-
-        //player.starMoving(grid, 3);
-
-        //player = Instantiate(PlayerPrefab, new Vector2(8, 0), Quaternion.identity);
-
-        //player.starMoving(grid, 3);
-
-
-        //player = Instantiate(PlayerPrefab, new Vector2(6, 0), Quaternion.identity);
-
-        //player.starMoving(grid, 3);
-
-
-        //player = Instantiate(PlayerPrefab, new Vector2(6, 6), Quaternion.identity);
-
-        //player.starMoving(grid, 3);
-
     }
 
     private void setRandomTower(int towerCount)
