@@ -2,28 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSource : MonoBehaviour
+public class PowerSource : Unit
 {
-    public int HP = 1000;
-
-    private void Awake()
+    public void Init()
     {
-        HP = 1000;
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //Debug.Log("Hit");
-        if (collision.gameObject.tag == "Bullet")
-        {
-            
-            HP -= 20;
-            //Debug.Log("Power source Hit by a bullet, new HP "+ HP);
-            Destroy(collision.gameObject);
-            if (HP < 0)
-            {
-                Destroy(this.gameObject);
-                //GameManager.Instance.UpdateGameState(GameManager.GameStateEnum.end);
-            }
-        }
+        base.Init(UnitType.POWER_SOURCE, 1, 14, 1, 1);
     }
 }

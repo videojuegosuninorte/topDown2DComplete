@@ -86,7 +86,7 @@ public class Grid : ScriptableObject
 
     public Cell GetGridObject(int x, int y)
     {
-        Debug.Log("GetGridObject " + x + " " + y);
+        //Debug.Log("GetGridObject " + x + " " + y);
         return gridArray[x, y];
     }
 

@@ -4,17 +4,14 @@ using UnityEngine;
 
 // ref: https://drive.google.com/file/d/1WiF2LwM-6WvEnas9vw32YrYPly9K0Qrv/view
 
-public class Player : MonoBehaviour
+public class Player : AttackingUnit
 {
     List<Cell> path;
-    [SerializeField]
     private float moveSpeed = 2f;
     public Vector2 GetPosition => transform.localPosition;
     private bool startMoving = false;
     private Grid grid;
     private bool changedCells = false;
-    private Rigidbody2D rb;
-    private int HP;
     private PathManager pathManager;
 
     // Index of current waypoint from which Enemy walks
@@ -30,14 +27,28 @@ public class Player : MonoBehaviour
     }
 
 
-    public void starMoving(Grid grid, float speed, PathManager path)
+    public void starMoving(Grid grid, PathManager path, UnitType theUnitType)
     {
-        HP = 4000;
         this.grid = grid;
         this.pathManager = path;
         calculatePath();
         startMoving = true;
-        moveSpeed = speed;
+        
+        switch (theUnitType)
+        {
+            case UnitType.INFANTERY_L:
+                base.Init(theUnitType, 1, 4, 1, 1);
+                break;
+            case UnitType.INFANTERY_H:
+                base.Init(theUnitType, 2, 6, 1, 1);
+                break;
+            case UnitType.INFANTERY_K:
+                base.Init(theUnitType, 1, 8, 1, 1);
+                break;
+        }
+        Debug.Log("starMoving for unit " + printUnitType());
+
+
     }
 
     private void calculatePath()
@@ -48,25 +59,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "PowerSource")
-        {
-            Debug.Log("Made it");
-            path = null;
-        }
-
-        // Debug.Log("Hit");
-        if (collision.gameObject.tag == "EnemyBullet")
-        {
-
-            HP -= 20;
-            //Debug.Log("Hit by a bullet, new HP "+ HP);
-            Destroy(collision.gameObject);
-            if (HP < 0)
+        if (collision.gameObject.GetComponent<Unit>() != null) { 
+            Unit unit = collision.gameObject.GetComponent<Unit>();
+            if (unit.isPowerSource())
             {
-                Destroy(this.gameObject);
-                
+                Debug.Log("Made it");
+                path = null;
             }
         }
+        LowerDefense(collision);
     }
 
     private void Move()

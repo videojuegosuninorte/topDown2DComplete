@@ -23,24 +23,15 @@ public class BoardManager : MonoBehaviour
 
         PowerSource powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
+        powerSource.Init();
 
         PathManager pathManager = new PathManager();
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        setRandomTower(4);
+        //setRandomTower(2);
 
-        //tower = Instantiate(TowerPrefab, new Vector2(7, 17), Quaternion.identity);
-
-        //tower.SetGrid(grid);
-
-        //player = Instantiate(PlayerPrefab, new Vector2(0+transform.position.x, 0+transform.position.y), Quaternion.identity);
-
-        //player.transform.SetParent(transform);
-
-        //player.starMoving(grid, 4, pathManager);
-
-        setRandomPlayers(5, pathManager);
+        setRandomPlayers(1, pathManager);
     }
 
     private void setRandomTower(int towerCount)
@@ -59,6 +50,8 @@ public class BoardManager : MonoBehaviour
             tower.transform.SetParent(transform);
 
             tower.SetGrid(grid);
+
+            tower.Init(UnitType.TOWER_L);
         }
     }
 
@@ -74,10 +67,8 @@ public class BoardManager : MonoBehaviour
             } while (!grid.isWalkable(posX, posY));
 
             player = Instantiate(PlayerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
-
             player.transform.SetParent(transform);
-
-            player.starMoving(grid, 4, pathManager);
+            player.starMoving(grid, pathManager,UnitType.INFANTERY_L);
         }
     }
 }

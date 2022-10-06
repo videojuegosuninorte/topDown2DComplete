@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3550549395752754143}
   - component: {fileID: 3550549395752754128}
   - component: {fileID: 1428317467466988976}
-  - component: {fileID: -7195923571228030486}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Tower
@@ -137,22 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 371a317c2747d4c3cb19f04da45c8b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-7195923571228030486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3550549395752754138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 771c8b3709ef3434183b1d6af7e77b8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firePoint: {fileID: 2299624687026295009}
-  bulletPrefab: {fileID: 7485509747269389125, guid: 4f80d9373ba03854ab817b3c56f094ca, type: 3}
-  bulletForce: 20
   shootingInterval: 0.3
+  bulletPrefab: {fileID: 7485509747269389125, guid: 2368e05c83ff94e579a141c41c3e773a, type: 3}
+  firePoint: {fileID: 2299624687026295009}
 --- !u!1 &4641202538481310363
 GameObject:
   m_ObjectHideFlags: 0
