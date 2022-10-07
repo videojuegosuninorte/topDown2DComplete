@@ -33,6 +33,9 @@ public class Grid : ScriptableObject
     {
         Cell cell;
         gridArray = new Cell[width, height];
+        ExternalWall ew;
+        GameObject parent = new GameObject("WallParent");
+        parent.transform.SetParent(parentTransform);
 
         for (int i = 0; i < width; i++)
         {
@@ -48,16 +51,21 @@ public class Grid : ScriptableObject
 
                 gridArray[i, j] = cell;
 
-                if (i == 0)
-                    Instantiate(externalWall, new Vector2(-1 + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
+                if (i == 0) { 
+                    ew = Instantiate(externalWall, new Vector2(-1 + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
+                    ew.gameObject.transform.SetParent(parent.gameObject.transform);
+                }
 
-                if (i == width-1)
-                    Instantiate(externalWall, new Vector2(width  + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
+                if (i == width - 1) { 
+                    ew = Instantiate(externalWall, new Vector2(width  + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
+                    ew.gameObject.transform.SetParent(parent.gameObject.transform);
+                }
             }
 
-            Instantiate(externalWall, new Vector2(i + parentTransform.position.x, -1 + parentTransform.position.y) * cellSize, Quaternion.identity);
-            Instantiate(externalWall, new Vector2(i + parentTransform.position.x,height + parentTransform.position.y) * cellSize, Quaternion.identity);
-
+            ew = Instantiate(externalWall, new Vector2(i + parentTransform.position.x, -1 + parentTransform.position.y) * cellSize, Quaternion.identity);
+            ew.gameObject.transform.SetParent(parent.gameObject.transform);
+            ew = Instantiate(externalWall, new Vector2(i + parentTransform.position.x,height + parentTransform.position.y) * cellSize, Quaternion.identity);
+            ew.gameObject.transform.SetParent(parent.gameObject.transform);
 
         }
 

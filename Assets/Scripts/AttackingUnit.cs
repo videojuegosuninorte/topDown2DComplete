@@ -38,7 +38,7 @@ public class AttackingUnit : Unit
 
     public void lookAtTarget()
     {
-        Debug.Log("lookAtTarget");
+        //Debug.Log("lookAtTarget");
         Vector2 lookDir = enenyLocation - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90;
         rb.rotation = angle;

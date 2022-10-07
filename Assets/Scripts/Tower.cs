@@ -13,6 +13,7 @@ public class Tower : AttackingUnit
         {
             case UnitType.TOWER_H:
                 base.Init(unitType, 2, 3, 1, 1);
+                GetComponent<SpriteRenderer>().color = Color.red;
                 break;
             case UnitType.TOWER_L:
                 base.Init(unitType, 3, 4, 1, 1);

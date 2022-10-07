@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class BoardManager : MonoBehaviour
 {
+    private PowerSource powerSource;
+    private PathManager pathManager;
     [SerializeField] private Cell CellPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private PowerSource PowerSourcePrefab;
@@ -14,8 +16,11 @@ public class BoardManager : MonoBehaviour
     private Grid grid;
     private Player player;
 
+    private int playerCount = 14;
+
     private void Awake()
     {
+        pathManager = new PathManager();
         SetupBoard();
     }
 
@@ -23,11 +28,25 @@ public class BoardManager : MonoBehaviour
     {
         grid = new Grid(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
 
-        PowerSource powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
+        setupPieces();
+
+        Player.onDead += decreadPlayer;
+
+        PowerSource.onPowerSourceDestroy += powerSourceDestroyed;
+    }
+
+    private void restart()
+    {
+        Debug.Log("restart");
+       // clearPieces();
+        //setupPieces();
+    }
+
+    private void setupPieces()
+    {
+        powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
         powerSource.Init();
-
-        PathManager pathManager = new PathManager();
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
@@ -37,7 +56,58 @@ public class BoardManager : MonoBehaviour
 
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-        setRandomPlayers(13, pathManager, UnitType.INFANTERY_H);
+        setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+
+        //Player.onDead += decreadPlayer;
+
+        //PowerSource.onPowerSourceDestroy += powerSourceDestroyed;
+
+    }
+
+    private void clearPieces()
+    {
+        //Player.onDead -= decreadPlayer;
+
+        //PowerSource.onPowerSourceDestroy -= powerSourceDestroyed;
+
+        //GameObject[] allObjects = GameObject.FindGameObjectsWithTag("Player");
+        //Debug.Log("Found "+allObjects.Length+" players");
+        //foreach (GameObject obj in allObjects)
+        //{
+        //    Destroy(obj);
+        //}
+
+        //GameObject[] allTowers = GameObject.FindGameObjectsWithTag("Tower");
+        //Debug.Log("Found " + allTowers.Length + " towers");
+        //foreach (GameObject obj in allTowers)
+        //{
+        //    Destroy(obj);
+        //}
+
+        //GameObject[] allPowerSource = GameObject.FindGameObjectsWithTag("PowerSource");
+        //Debug.Log("Found " + allPowerSource.Length + " power sources");
+        //foreach (GameObject obj in allPowerSource)
+        //{
+        //    Destroy(obj);
+        //}
+
+
+    }
+
+    private void decreadPlayer()
+    {
+        playerCount--;
+        Debug.Log("Remaining " + playerCount + " units");
+        if (playerCount == 0)
+        {
+            restart();
+        }
+    }
+
+    private void powerSourceDestroyed()
+    {
+        Debug.Log("Power source destroyed");
+        restart();
     }
 
     private void setRandomTower(int towerCount, UnitType unitType)
@@ -75,6 +145,7 @@ public class BoardManager : MonoBehaviour
             player = Instantiate(PlayerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
             player.transform.SetParent(transform);
             player.starMoving(grid, pathManager, unitType);
+
         }
     }
 }

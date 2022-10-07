@@ -18,6 +18,17 @@ public class Player : AttackingUnit
     // to the next one
     private int waypointIndex = 0;
 
+    public delegate void PlayerDied();
+    public static event PlayerDied onDead;
+
+    private void OnDestroy()
+    {
+        if (onDead != null)
+        {
+            onDead();
+        }
+    }
+
     void FixedUpdate()
     {
         if (startMoving)
