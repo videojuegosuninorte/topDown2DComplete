@@ -18,14 +18,11 @@ public class Player : AttackingUnit
     // to the next one
     private int waypointIndex = 0;
 
-    
-
     void FixedUpdate()
     {
         if (startMoving)
             Move();
     }
-
 
     public void starMoving(Grid grid, PathManager path, UnitType theUnitType)
     {
@@ -38,9 +35,13 @@ public class Player : AttackingUnit
         {
             case UnitType.INFANTERY_L:
                 base.Init(theUnitType, 1, 4, 1, 1);
+                GetComponent<SpriteRenderer>().color = Color.cyan;
+                moveSpeed = 2f;
                 break;
             case UnitType.INFANTERY_H:
+                GetComponent<SpriteRenderer>().color = Color.yellow;
                 base.Init(theUnitType, 2, 6, 1, 1);
+                moveSpeed = 1f;
                 break;
             case UnitType.INFANTERY_K:
                 base.Init(theUnitType, 1, 8, 1, 1);

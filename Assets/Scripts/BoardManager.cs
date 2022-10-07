@@ -9,6 +9,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private PowerSource PowerSourcePrefab;
     [SerializeField] private Tower TowerPrefab;
+    [SerializeField] private ExternalWall ExternalWallPrefab;
+
     private Grid grid;
     private Player player;
 
@@ -19,7 +21,7 @@ public class BoardManager : MonoBehaviour
 
     public void SetupBoard()
     {
-        grid = new Grid(11, 20, 1, CellPrefab, transform);
+        grid = new Grid(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
 
         PowerSource powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
@@ -29,12 +31,16 @@ public class BoardManager : MonoBehaviour
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        //setRandomTower(2);
+        setRandomTower(3, UnitType.TOWER_L);
 
-        setRandomPlayers(1, pathManager);
+        setRandomTower(3, UnitType.TOWER_L);
+
+        setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+
+        setRandomPlayers(13, pathManager, UnitType.INFANTERY_H);
     }
 
-    private void setRandomTower(int towerCount)
+    private void setRandomTower(int towerCount, UnitType unitType)
     {
         int posX, posY;
         for (int i = 0; i < towerCount; i++)
@@ -51,11 +57,11 @@ public class BoardManager : MonoBehaviour
 
             tower.SetGrid(grid);
 
-            tower.Init(UnitType.TOWER_L);
+            tower.Init(unitType);
         }
     }
 
-    private void setRandomPlayers(int playerCount, PathManager pathManager)
+    private void setRandomPlayers(int playerCount, PathManager pathManager, UnitType unitType)
     {
         int posX, posY;
         for (int i = 0; i < playerCount; i++)
@@ -68,7 +74,7 @@ public class BoardManager : MonoBehaviour
 
             player = Instantiate(PlayerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
             player.transform.SetParent(transform);
-            player.starMoving(grid, pathManager,UnitType.INFANTERY_L);
+            player.starMoving(grid, pathManager, unitType);
         }
     }
 }

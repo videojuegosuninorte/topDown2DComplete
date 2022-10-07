@@ -336,6 +336,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 4587635388746303466, guid: e8d4002ea143343439f26e985cee9581, type: 3}
   PowerSourcePrefab: {fileID: 2219081163613578378, guid: 152930bb97dca45e9be6ef08cdaea323, type: 3}
   TowerPrefab: {fileID: 1428317467466988976, guid: 5623c1cee0e974aa2b4d2e1ca1085180, type: 3}
+  ExternalWallPrefab: {fileID: 0}
 --- !u!4 &584270646
 Transform:
   m_ObjectHideFlags: 0
@@ -385,6 +386,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 4587635388746303466, guid: e8d4002ea143343439f26e985cee9581, type: 3}
   PowerSourcePrefab: {fileID: 2219081163613578378, guid: 152930bb97dca45e9be6ef08cdaea323, type: 3}
   TowerPrefab: {fileID: 1428317467466988976, guid: 5623c1cee0e974aa2b4d2e1ca1085180, type: 3}
+  ExternalWallPrefab: {fileID: -2127346969225198879, guid: 2c6fac7fb2409f64ca4b557f124123e7, type: 3}
 --- !u!4 &681147168
 Transform:
   m_ObjectHideFlags: 0
@@ -460,6 +462,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 4587635388746303466, guid: e8d4002ea143343439f26e985cee9581, type: 3}
   PowerSourcePrefab: {fileID: 2219081163613578378, guid: 152930bb97dca45e9be6ef08cdaea323, type: 3}
   TowerPrefab: {fileID: 1428317467466988976, guid: 5623c1cee0e974aa2b4d2e1ca1085180, type: 3}
+  ExternalWallPrefab: {fileID: 0}
 --- !u!4 &705663702
 Transform:
   m_ObjectHideFlags: 0

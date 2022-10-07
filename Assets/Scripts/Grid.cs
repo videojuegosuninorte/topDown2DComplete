@@ -12,10 +12,11 @@ public class Grid : ScriptableObject
     private int cellSize;
     private Cell cellPrefab;
     private Cell[,] gridArray;
+    private ExternalWall externalWall;
     private Transform parentTransform;
 
 
-    public Grid(int width, int height, int cellSize, Cell cellPrefab, Transform parentTransform)
+    public Grid(int width, int height, int cellSize, Cell cellPrefab, Transform parentTransform, ExternalWall externalWall)
     {
         
         this.width = width;
@@ -23,6 +24,7 @@ public class Grid : ScriptableObject
         this.cellSize = cellSize;
         this.cellPrefab = cellPrefab;
         this.parentTransform = parentTransform;
+        this.externalWall = externalWall;
 
         generateBoard();
     }
@@ -34,22 +36,29 @@ public class Grid : ScriptableObject
 
         for (int i = 0; i < width; i++)
         {
+            
             for (int j = 0; j < height; j++)
             {
                 var p = new Vector2(i+parentTransform.position.x, j+parentTransform.position.y) * cellSize;
                 cell = Instantiate(cellPrefab, p, Quaternion.identity);
-                //cell.transform.SetParent(parent.transform);
+                
                 cell.Init(this, i, j, true);
 
                 cell.transform.SetParent(parentTransform);
 
-                //if (Random.Range(0, 10) <= 2)
-                //    cell.SetWalkable(false);
-                //else
-                //    cell.SetColor(Color.blue);
-
                 gridArray[i, j] = cell;
+
+                if (i == 0)
+                    Instantiate(externalWall, new Vector2(-1 + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
+
+                if (i == width-1)
+                    Instantiate(externalWall, new Vector2(width  + parentTransform.position.x, j  + parentTransform.position.y) * cellSize, Quaternion.identity);
             }
+
+            Instantiate(externalWall, new Vector2(i + parentTransform.position.x, -1 + parentTransform.position.y) * cellSize, Quaternion.identity);
+            Instantiate(externalWall, new Vector2(i + parentTransform.position.x,height + parentTransform.position.y) * cellSize, Quaternion.identity);
+
+
         }
 
         //var center = new Vector2((float)height / 2 - 0.5f, (float)width / 2 - 0.5f);

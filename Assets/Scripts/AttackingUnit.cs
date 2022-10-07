@@ -29,6 +29,11 @@ public class AttackingUnit : Unit
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        startShotting = false; 
+    }
+
 
 
     public void lookAtTarget()
