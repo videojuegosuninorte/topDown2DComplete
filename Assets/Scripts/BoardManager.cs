@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.IO;
 
 public class BoardManager : MonoBehaviour
 {
@@ -21,29 +22,66 @@ public class BoardManager : MonoBehaviour
     private void Awake()
     {
         pathManager = new PathManager();
+        
         SetupBoard();
     }
 
-    public void SetupBoard()
+
+    void Update()
     {
-        grid = new Grid(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            restart();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SetupBoard();
+        }
+
+        if (!FindObjectOfType(typeof(Player))){
+            Debug.Log("restart, no players");
+            writeString(false);
+            restart();
+        }
+
+        if (!FindObjectOfType(typeof(PowerSource)))
+        {
+            Debug.Log("restart, no power source");
+            writeString(true);
+            restart();
+        }
+
+    }
+
+    private void writeString(bool win)
+    {
+        StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        writer.WriteLine(win.ToString());
+        writer.Close();
+        StreamReader reader = new StreamReader("gameResults.txt");
+        //Print the text from the file
+        Debug.Log(reader.ReadToEnd());
+        reader.Close();
+    }
+
+
+    private void SetupBoard()
+    {
         setupPieces();
-
-        Player.onDead += decreadPlayer;
-
-        PowerSource.onPowerSourceDestroy += powerSourceDestroyed;
     }
 
     private void restart()
     {
         Debug.Log("restart");
         clearPieces();
-        //setupPieces();
+        setupPieces();
     }
 
     private void setupPieces()
     {
+        grid = new Grid(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
         powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
         powerSource.Init();
@@ -57,19 +95,10 @@ public class BoardManager : MonoBehaviour
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
         setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
-
-        //Player.onDead += decreadPlayer;
-
-        //PowerSource.onPowerSourceDestroy += powerSourceDestroyed;
-
     }
 
     private void clearPieces()
     {
-        //Player.onDead -= decreadPlayer;
-
-        //PowerSource.onPowerSourceDestroy -= powerSourceDestroyed;
-
         GameObject[] allObjects = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log("Found " + allObjects.Length + " players");
         foreach (GameObject obj in allObjects)

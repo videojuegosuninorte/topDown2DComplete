@@ -58,7 +58,7 @@ public class Player : AttackingUnit
                 base.Init(theUnitType, 1, 8, 1, 1);
                 break;
         }
-        Debug.Log("starMoving for unit " + printUnitType());
+        //Debug.Log("starMoving for unit " + printUnitType());
 
 
     }
@@ -75,7 +75,7 @@ public class Player : AttackingUnit
             Unit unit = collision.gameObject.GetComponent<Unit>();
             if (unit.isPowerSource())
             {
-                Debug.Log("Made it");
+                //Debug.Log("Made it");
                 path = null;
             }
         }
