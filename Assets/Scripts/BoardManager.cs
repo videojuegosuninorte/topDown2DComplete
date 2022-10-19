@@ -13,6 +13,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private PowerSource PowerSourcePrefab;
     [SerializeField] private Tower TowerPrefab;
     [SerializeField] private ExternalWall ExternalWallPrefab;
+    [SerializeField] private Grid GridPrefab;
 
     private Grid grid;
     private Player player;
@@ -81,7 +82,10 @@ public class BoardManager : MonoBehaviour
 
     private void setupPieces()
     {
-        grid = new Grid(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
+        grid = Instantiate(GridPrefab, transform.localPosition, Quaternion.identity);
+        grid.Init(11, 20, 1, CellPrefab, transform, ExternalWallPrefab);
+        grid.transform.SetParent(transform);
+
         powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
         powerSource.Init();

@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class Grid : ScriptableObject
+public class Grid : MonoBehaviour
 {
     private int width;
     private int height;
@@ -16,9 +16,21 @@ public class Grid : ScriptableObject
     private Transform parentTransform;
 
 
-    public Grid(int width, int height, int cellSize, Cell cellPrefab, Transform parentTransform, ExternalWall externalWall)
-    {
+    //public Grid(int width, int height, int cellSize, Cell cellPrefab, Transform parentTransform, ExternalWall externalWall)
+    //{
         
+    //    this.width = width;
+    //    this.height = height;
+    //    this.cellSize = cellSize;
+    //    this.cellPrefab = cellPrefab;
+    //    this.parentTransform = parentTransform;
+    //    this.externalWall = externalWall;
+
+    //    generateBoard();
+    //}
+
+    public void Init(int width, int height, int cellSize, Cell cellPrefab, Transform parentTransform, ExternalWall externalWall)
+    {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
