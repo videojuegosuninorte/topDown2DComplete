@@ -38,7 +38,7 @@ public class BoardManager : MonoBehaviour
     private void restart()
     {
         Debug.Log("restart");
-       // clearPieces();
+        clearPieces();
         //setupPieces();
     }
 
@@ -52,7 +52,7 @@ public class BoardManager : MonoBehaviour
 
         setRandomTower(3, UnitType.TOWER_L);
 
-        setRandomTower(3, UnitType.TOWER_L);
+        setRandomTower(3, UnitType.TOWER_H);
 
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
@@ -70,26 +70,26 @@ public class BoardManager : MonoBehaviour
 
         //PowerSource.onPowerSourceDestroy -= powerSourceDestroyed;
 
-        //GameObject[] allObjects = GameObject.FindGameObjectsWithTag("Player");
-        //Debug.Log("Found "+allObjects.Length+" players");
-        //foreach (GameObject obj in allObjects)
-        //{
-        //    Destroy(obj);
-        //}
+        GameObject[] allObjects = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log("Found " + allObjects.Length + " players");
+        foreach (GameObject obj in allObjects)
+        {
+            Destroy(obj);
+        }
 
-        //GameObject[] allTowers = GameObject.FindGameObjectsWithTag("Tower");
-        //Debug.Log("Found " + allTowers.Length + " towers");
-        //foreach (GameObject obj in allTowers)
-        //{
-        //    Destroy(obj);
-        //}
+        GameObject[] allTowers = GameObject.FindGameObjectsWithTag("Tower");
+        Debug.Log("Found " + allTowers.Length + " towers");
+        foreach (GameObject obj in allTowers)
+        {
+            Destroy(obj);
+        }
 
-        //GameObject[] allPowerSource = GameObject.FindGameObjectsWithTag("PowerSource");
-        //Debug.Log("Found " + allPowerSource.Length + " power sources");
-        //foreach (GameObject obj in allPowerSource)
-        //{
-        //    Destroy(obj);
-        //}
+        GameObject[] allPowerSource = GameObject.FindGameObjectsWithTag("PowerSource");
+        Debug.Log("Found " + allPowerSource.Length + " power sources");
+        foreach (GameObject obj in allPowerSource)
+        {
+            Destroy(obj);
+        }
 
 
     }
