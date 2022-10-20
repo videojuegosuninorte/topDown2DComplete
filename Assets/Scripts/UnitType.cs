@@ -9,5 +9,6 @@ public enum UnitType
     INFANTERY_L,
     INFANTERY_H,
     INFANTERY_K,
-    POWER_SOURCE
+    POWER_SOURCE,
+    NONE
 }

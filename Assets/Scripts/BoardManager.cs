@@ -8,6 +8,8 @@ public class BoardManager : MonoBehaviour
 {
     private PowerSource powerSource;
     private PathManager pathManager;
+    private List<CellInfo> towers;
+    private List<CellInfo> players;
     [SerializeField] private Cell CellPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private PowerSource PowerSourcePrefab;
@@ -20,10 +22,12 @@ public class BoardManager : MonoBehaviour
 
     private int playerCount = 14;
 
+
     private void Awake()
     {
         pathManager = new PathManager();
-        
+        towers = new List<CellInfo>();
+        players = new List<CellInfo>();
         SetupBoard();
     }
 
@@ -40,6 +44,13 @@ public class BoardManager : MonoBehaviour
         {
             SetupBoard();
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            towers.Clear();
+        }
+
+        
 
         if (!FindObjectOfType(typeof(Player))){
             Debug.Log("restart, no players");
@@ -59,6 +70,14 @@ public class BoardManager : MonoBehaviour
     private void writeString(bool win)
     {
         StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        foreach(CellInfo cellInfo in towers)
+        {
+            writer.Write(cellInfo.ToString());
+        }
+        foreach (CellInfo cellInfo in players)
+        {
+            writer.Write(cellInfo.ToString());
+        }
         writer.WriteLine(win.ToString());
         writer.Close();
         StreamReader reader = new StreamReader("gameResults.txt");
@@ -92,9 +111,16 @@ public class BoardManager : MonoBehaviour
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        setRandomTower(3, UnitType.TOWER_L);
+        if (towers.Count == 0) { 
+            setRandomTower(3, UnitType.TOWER_L);
 
-        setRandomTower(3, UnitType.TOWER_H);
+            setRandomTower(3, UnitType.TOWER_H);
+        } else
+        {
+            recreateTowers();
+        }
+
+        players.Clear();
 
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
@@ -145,6 +171,7 @@ public class BoardManager : MonoBehaviour
 
     private void setRandomTower(int towerCount, UnitType unitType)
     {
+        
         int posX, posY;
         for (int i = 0; i < towerCount; i++)
         {
@@ -161,12 +188,29 @@ public class BoardManager : MonoBehaviour
             tower.SetGrid(grid);
 
             tower.Init(unitType);
+
+            towers.Add(new CellInfo(posX, posY, unitType));
+        }
+    }
+
+    private void recreateTowers()
+    {
+        foreach (CellInfo cellInfo in towers)
+        {
+            Tower tower = Instantiate(TowerPrefab, new Vector2(cellInfo.x + transform.position.x, cellInfo.y + transform.position.y), Quaternion.identity);
+
+            tower.transform.SetParent(transform);
+
+            tower.SetGrid(grid);
+
+            tower.Init(cellInfo.unitType);
         }
     }
 
     private void setRandomPlayers(int playerCount, PathManager pathManager, UnitType unitType)
     {
         int posX, posY;
+        
         for (int i = 0; i < playerCount; i++)
         {
             do
@@ -178,7 +222,7 @@ public class BoardManager : MonoBehaviour
             player = Instantiate(PlayerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
             player.transform.SetParent(transform);
             player.starMoving(grid, pathManager, unitType);
-
+            players.Add(new CellInfo(posX, posY, unitType));
         }
     }
 }
