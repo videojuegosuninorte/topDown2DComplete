@@ -67,16 +67,45 @@ public class BoardManager : MonoBehaviour
 
     }
 
+    private UnitType returnUnitType(int x, int y)
+    {
+        foreach (CellInfo cellInfo in towers)
+        {
+            if (cellInfo.x == x && cellInfo.y == y)
+            {
+                return cellInfo.unitType;
+            }
+        }
+
+        foreach (CellInfo cellInfo in players)
+        {
+            if (cellInfo.x == x && cellInfo.y == y)
+            {
+                return cellInfo.unitType;
+            }
+        }
+
+        return UnitType.NONE;
+
+    }
+
     private void writeString(bool win)
     {
         StreamWriter writer = new StreamWriter("gameResults.txt", true);
-        foreach(CellInfo cellInfo in towers)
+        //foreach(CellInfo cellInfo in towers)
+        //{
+        //    writer.Write(cellInfo.ToString());
+        //}
+        //foreach (CellInfo cellInfo in players)
+        //{
+        //    writer.Write(cellInfo.ToString());
+        //}
+        for (int i = 0; i < 11; i++)
         {
-            writer.Write(cellInfo.ToString());
-        }
-        foreach (CellInfo cellInfo in players)
-        {
-            writer.Write(cellInfo.ToString());
+            for (int j = 0; j < 20; j++)
+            {
+                writer.Write(i + " " + j + " " + returnUnitType(i, j)+ " ");
+            }
         }
         writer.WriteLine(win.ToString());
         writer.Close();
