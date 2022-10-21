@@ -16,11 +16,12 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Tower TowerPrefab;
     [SerializeField] private ExternalWall ExternalWallPrefab;
     [SerializeField] private Grid GridPrefab;
+    private bool started = false;
 
     private Grid grid;
     private Player player;
 
-    private int playerCount = 14;
+    private int towerCountRepeat = 10;
 
 
     private void Awake()
@@ -50,22 +51,31 @@ public class BoardManager : MonoBehaviour
             towers.Clear();
         }
 
-        
+        if (!started)
+            return;
 
-        if (!FindObjectOfType(typeof(Player))){
-            Debug.Log("restart, no players");
+        if (!transform.Find("Player(Clone)"))
+        {
+
+            Debug.Log(transform.name + " restart, no players");
             writeString(false);
             restart();
         }
 
-        if (!FindObjectOfType(typeof(PowerSource)))
+
+
+        if (!transform.Find("PowerSource(Clone)"))
         {
-            Debug.Log("restart, no power source");
+            Debug.Log(transform.name + " restart, no power source");
             writeString(true);
             restart();
         }
 
+        //Debug.Log(GetInstanceID() + " " + transform.name);
+
     }
+
+   
 
     private UnitType returnUnitType(int x, int y)
     {
@@ -92,14 +102,6 @@ public class BoardManager : MonoBehaviour
     private void writeString(bool win)
     {
         StreamWriter writer = new StreamWriter("gameResults.txt", true);
-        //foreach(CellInfo cellInfo in towers)
-        //{
-        //    writer.Write(cellInfo.ToString());
-        //}
-        //foreach (CellInfo cellInfo in players)
-        //{
-        //    writer.Write(cellInfo.ToString());
-        //}
         for (int i = 0; i < 11; i++)
         {
             for (int j = 0; j < 20; j++)
@@ -118,12 +120,14 @@ public class BoardManager : MonoBehaviour
 
     private void SetupBoard()
     {
+
         setupPieces();
+        
     }
 
     private void restart()
     {
-        Debug.Log("restart");
+        Debug.Log(GetInstanceID() + " restart");
         clearPieces();
         setupPieces();
     }
@@ -140,13 +144,16 @@ public class BoardManager : MonoBehaviour
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        if (towers.Count == 0) { 
+        if (towers.Count == 0 || towerCountRepeat == 0) { 
             setRandomTower(3, UnitType.TOWER_L);
 
             setRandomTower(3, UnitType.TOWER_H);
+
+            towerCountRepeat = 10;
         } else
         {
             recreateTowers();
+            towerCountRepeat = towerCountRepeat - 1;
         }
 
         players.Clear();
@@ -154,42 +161,26 @@ public class BoardManager : MonoBehaviour
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
         setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+
+        started = true;
     }
+
+
 
     private void clearPieces()
     {
-        GameObject[] allObjects = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log("Found " + allObjects.Length + " players");
-        foreach (GameObject obj in allObjects)
-        {
-            Destroy(obj);
-        }
 
-        GameObject[] allTowers = GameObject.FindGameObjectsWithTag("Tower");
-        Debug.Log("Found " + allTowers.Length + " towers");
-        foreach (GameObject obj in allTowers)
+        foreach (Transform child in transform)
         {
-            Destroy(obj);
+            GameObject.Destroy(child.gameObject);
         }
-
-        GameObject[] allPowerSource = GameObject.FindGameObjectsWithTag("PowerSource");
-        Debug.Log("Found " + allPowerSource.Length + " power sources");
-        foreach (GameObject obj in allPowerSource)
-        {
-            Destroy(obj);
-        }
-
+       
 
     }
 
     private void decreadPlayer()
     {
-        playerCount--;
-        Debug.Log("Remaining " + playerCount + " units");
-        if (playerCount == 0)
-        {
-            restart();
-        }
+    
     }
 
     private void powerSourceDestroyed()
