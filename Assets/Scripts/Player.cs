@@ -35,7 +35,7 @@ public class Player : AttackingUnit
             Move();
     }
 
-    public void starMoving(Grid grid, PathManager path, UnitType theUnitType)
+    public void starMoving(Grid grid, PathManager path, int theUnitType)
     {
         this.grid = grid;
         this.pathManager = path;

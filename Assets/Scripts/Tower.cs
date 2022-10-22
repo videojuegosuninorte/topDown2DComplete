@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tower : AttackingUnit
 {
 
-    public void Init(UnitType unitType)
+    public void Init(int unitType)
     {
         this.unitType = unitType;
         switch (unitType)

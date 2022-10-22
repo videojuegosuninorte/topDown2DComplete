@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     private int defense;
     private int cost;
     private int range;
-    protected UnitType unitType;
+    protected int unitType;
     protected bool started;
 
     private void Awake()
@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(UnitType unitType, int attack, int defense, int cost, int range)
+    public void Init(int unitType, int attack, int defense, int cost, int range)
     {
         this.unitType = unitType;
         this.attack = attack;
@@ -39,7 +39,7 @@ public class Unit : MonoBehaviour
         return true;
     }
 
-    public bool IsSameTeam(UnitType someUnitType)
+    public bool IsSameTeam(int someUnitType)
     {
         switch (someUnitType)
         {

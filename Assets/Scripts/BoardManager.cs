@@ -21,7 +21,7 @@ public class BoardManager : MonoBehaviour
     private Grid grid;
     private Player player;
 
-    private int towerCountRepeat = 10;
+    private int towerCountRepeat = 50;
 
 
     private void Awake()
@@ -58,7 +58,7 @@ public class BoardManager : MonoBehaviour
         {
 
             Debug.Log(transform.name + " restart, no players");
-            writeString(false);
+            writeString(0);
             restart();
         }
 
@@ -67,7 +67,7 @@ public class BoardManager : MonoBehaviour
         if (!transform.Find("PowerSource(Clone)"))
         {
             Debug.Log(transform.name + " restart, no power source");
-            writeString(true);
+            writeString(1);
             restart();
         }
 
@@ -77,7 +77,7 @@ public class BoardManager : MonoBehaviour
 
    
 
-    private UnitType returnUnitType(int x, int y)
+    private int returnUnitType(int x, int y)
     {
         foreach (CellInfo cellInfo in towers)
         {
@@ -99,23 +99,32 @@ public class BoardManager : MonoBehaviour
 
     }
 
-    private void writeString(bool win)
+    private void writeString(int win)
     {
         StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        writer.Write(win.ToString() + ",");
         for (int i = 0; i < 11; i++)
         {
-            for (int j = 0; j < 20; j++)
+            for (int j = 15; j < 20; j++)
             {
-                writer.Write(i + " " + j + " " + returnUnitType(i, j)+ " ");
+                writer.Write(returnUnitType(i, j) + ",");
             }
         }
-        writer.WriteLine(win.ToString());
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                writer.Write(returnUnitType(i, j) + ",");
+            }
+        }
+        writer.WriteLine("");
         writer.Close();
         StreamReader reader = new StreamReader("gameResults.txt");
         //Print the text from the file
-        Debug.Log(reader.ReadToEnd());
+        //Debug.Log(reader.ReadToEnd());
         reader.Close();
     }
+
 
 
     private void SetupBoard()
@@ -149,7 +158,7 @@ public class BoardManager : MonoBehaviour
 
             setRandomTower(3, UnitType.TOWER_H);
 
-            towerCountRepeat = 10;
+            towerCountRepeat = 50;
         } else
         {
             recreateTowers();
@@ -189,7 +198,7 @@ public class BoardManager : MonoBehaviour
         restart();
     }
 
-    private void setRandomTower(int towerCount, UnitType unitType)
+    private void setRandomTower(int towerCount, int unitType)
     {
         
         int posX, posY;
@@ -227,7 +236,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void setRandomPlayers(int playerCount, PathManager pathManager, UnitType unitType)
+    private void setRandomPlayers(int playerCount, PathManager pathManager, int unitType)
     {
         int posX, posY;
         

@@ -6,9 +6,9 @@ public class CellInfo
 {
     public int x;
     public int y;
-    public UnitType unitType;
+    public int unitType;
 
-    public CellInfo(int x, int y,UnitType unitType)
+    public CellInfo(int x, int y,int unitType)
     {
         this.x = x;
         this.y = y;
@@ -17,7 +17,7 @@ public class CellInfo
 
     public override string ToString() {
 
-        return x + " " + y + " " + unitType+";";
+        return x + " " + y + " " + (int) unitType+";";
     }
 
 }

@@ -47,6 +47,8 @@ public class Grid : MonoBehaviour
         gridArray = new Cell[width, height];
         ExternalWall ew;
         GameObject parent = new GameObject("WallParent");
+        //GameObject gridParent = new GameObject("CellParent");
+        //gridParent.transform.SetParent(parentTransform);
         parent.transform.SetParent(parentTransform);
 
         for (int i = 0; i < width; i++)

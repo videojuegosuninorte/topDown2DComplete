@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitType
+public static class UnitType
 {
-    TOWER_L,
-    TOWER_H,
-    INFANTERY_L,
-    INFANTERY_H,
-    INFANTERY_K,
-    POWER_SOURCE,
-    NONE
+    public const int NONE = 0;
+    public const int POWER_SOURCE = 1;
+    public const int TOWER_L = 2;
+    public const int TOWER_H = 3;
+    public const int INFANTERY_L = 4;
+    public const int INFANTERY_H = 5;
+    public const int INFANTERY_K = 6;
 }

@@ -6,10 +6,10 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int bulletPower;
-    public UnitType unitType;
+    public int unitType;
 
 
-    internal void Init(UnitType unitType, int bulletPower)
+    internal void Init(int unitType, int bulletPower)
     {
         this.unitType = unitType;
         this.bulletPower = bulletPower;
