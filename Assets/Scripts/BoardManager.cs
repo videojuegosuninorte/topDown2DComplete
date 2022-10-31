@@ -18,6 +18,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Grid GridPrefab;
     private bool started = false;
     private int START_P = 0, END_P = 3, START_T = 15, END_T = 18;
+    private int loopCounter = 0;
 
     private Grid grid;
     private Player player;
@@ -33,6 +34,17 @@ public class BoardManager : MonoBehaviour
         SetupBoard();
     }
 
+    private void FixedUpdate()
+    {
+        if (loopCounter > 2000)
+        {
+            Debug.Log("loopCounter RESTART");
+            loopCounter = 0;
+            restart();
+        }
+
+        loopCounter++;
+    }
 
     void Update()
     {
@@ -55,10 +67,14 @@ public class BoardManager : MonoBehaviour
         if (!started)
             return;
 
+
+        //Debug.Log("loopCounter " + loopCounter);
+
         if (!transform.Find("Player(Clone)"))
         {
 
-            Debug.Log(transform.name + " restart, no players");
+            //Debug.Log(transform.name + " restart, no players");
+            loopCounter = 0;
             writeString(0);
             restart();
         }
@@ -67,7 +83,8 @@ public class BoardManager : MonoBehaviour
 
         if (!transform.Find("PowerSource(Clone)"))
         {
-            Debug.Log(transform.name + " restart, no power source");
+            //Debug.Log(transform.name + " restart, no power source");
+            loopCounter = 0;
             writeString(1);
             restart();
         }
@@ -98,6 +115,36 @@ public class BoardManager : MonoBehaviour
 
         return UnitType.NONE;
 
+    }
+
+    private bool verifySetup()
+    {
+        int s = 0;
+
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = START_T; j < END_T; j++)
+            {
+                s = s + returnUnitType(i, j);
+            }
+        }
+        if (s != 15)
+        {
+            return false;
+        }
+        s = 0;
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = START_P; j < END_P; j++)
+            {
+                s = s + returnUnitType(i, j);
+            }
+        }
+        if (s != 57)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void writeString(int win)
@@ -137,7 +184,7 @@ public class BoardManager : MonoBehaviour
 
     private void restart()
     {
-        Debug.Log(GetInstanceID() + " restart");
+        //Debug.Log(GetInstanceID() + " restart");
         clearPieces();
         setupPieces();
     }
@@ -155,7 +202,9 @@ public class BoardManager : MonoBehaviour
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        if (towers.Count == 0 || towerCountRepeat == 0) { 
+        if (towers.Count == 0 || towerCountRepeat == 0) {
+            towers.Clear();
+
             setRandomTower(3, UnitType.TOWER_L);
 
             setRandomTower(3, UnitType.TOWER_H);
@@ -172,6 +221,13 @@ public class BoardManager : MonoBehaviour
         setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
         setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+
+        if (!verifySetup())
+        {
+            Debug.Log("verifySetup FAILED!!");
+            loopCounter = 0;
+            restart();
+        }
 
         started = true;
     }

@@ -103,7 +103,10 @@ public class Unit : MonoBehaviour
                 if (defense < 0)
                 {
                     if (unitType != UnitType.POWER_SOURCE)
+                    {
                         grid.SetWalkable(transform.localPosition, true);
+                    }
+                    
                     Destroy(this.gameObject);
                 }
             }

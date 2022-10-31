@@ -20,6 +20,7 @@ public class Player : AttackingUnit
 
     public delegate void PlayerDied();
     public static event PlayerDied onDead;
+    private int staticCounter = 0;
 
     private void OnDestroy()
     {
@@ -33,6 +34,10 @@ public class Player : AttackingUnit
     {
         if (startMoving)
             Move();
+        else
+        {
+            staticCounter = 0;
+        }
     }
 
     public void starMoving(Grid grid, PathManager path, int theUnitType)
