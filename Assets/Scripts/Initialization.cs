@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Initialization : MonoBehaviour
 {
+    private int START_P = 0, END_P = 3, START_T = 15, END_T = 18;
     void Start()
     {
         Application.runInBackground = true;
@@ -18,7 +19,7 @@ public class Initialization : MonoBehaviour
         int t = 0;
         for (int i = 0; i < 11; i++)
         {
-            for (int j = 15; j < 20; j++)
+            for (int j = START_T; j < END_T; j++)
             {
                 writer.Write("T" + t + ",");
                 t++;
@@ -28,7 +29,7 @@ public class Initialization : MonoBehaviour
         t = 0;
         for (int i = 0; i < 11; i++)
         {
-            for (int j = 0; j < 7; j++)
+            for (int j = START_P; j < END_P; j++)
             {
                 writer.Write("P" + t + ",");
                 t++;

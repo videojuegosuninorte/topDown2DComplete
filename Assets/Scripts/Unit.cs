@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     private int range;
     protected int unitType;
     protected bool started;
+    protected Grid grid;
 
     private void Awake()
     {
@@ -101,6 +102,8 @@ public class Unit : MonoBehaviour
                 Destroy(collision.gameObject);
                 if (defense < 0)
                 {
+                    if (unitType != UnitType.POWER_SOURCE)
+                        grid.SetWalkable(transform.localPosition, true);
                     Destroy(this.gameObject);
                 }
             }
@@ -111,5 +114,11 @@ public class Unit : MonoBehaviour
     {
 
         LowerDefense(collision);
+    }
+
+    public void SetGrid(Grid grid)
+    {
+        this.grid = grid;
+        grid.SetWalkable(transform.localPosition, false);
     }
 }

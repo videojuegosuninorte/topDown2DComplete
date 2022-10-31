@@ -18,6 +18,6 @@ public class PowerSource : Unit
 
     public void Init()
     {
-        base.Init(UnitType.POWER_SOURCE, 1, 14, 1, 1);
+        base.Init(UnitType.POWER_SOURCE, 1, 18, 1, 1);
     }
 }

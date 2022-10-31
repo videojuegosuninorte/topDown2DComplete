@@ -17,6 +17,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private ExternalWall ExternalWallPrefab;
     [SerializeField] private Grid GridPrefab;
     private bool started = false;
+    private int START_P = 0, END_P = 3, START_T = 15, END_T = 18;
 
     private Grid grid;
     private Player player;
@@ -105,14 +106,14 @@ public class BoardManager : MonoBehaviour
         writer.Write(win.ToString() + ",");
         for (int i = 0; i < 11; i++)
         {
-            for (int j = 15; j < 20; j++)
+            for (int j = START_T; j < END_T; j++)
             {
                 writer.Write(returnUnitType(i, j) + ",");
             }
         }
         for (int i = 0; i < 11; i++)
         {
-            for (int j = 0; j < 7; j++)
+            for (int j = START_P; j < END_P; j++)
             {
                 writer.Write(returnUnitType(i, j) + ",");
             }
@@ -150,6 +151,7 @@ public class BoardManager : MonoBehaviour
         powerSource = Instantiate(PowerSourcePrefab, new Vector2(5 + transform.localPosition.x, 19 + transform.localPosition.y), Quaternion.identity);
         powerSource.transform.SetParent(transform);
         powerSource.Init();
+        //powerSource.SetGrid(grid);
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
@@ -206,8 +208,8 @@ public class BoardManager : MonoBehaviour
         {
             do
             {
-                posX = Random.Range(0, 9);
-                posY = Random.Range(15, 17);
+                posX = Random.Range(0, 11);
+                posY = Random.Range(START_T, END_T);
             } while (!grid.isWalkable(posX, posY));
 
             Tower tower = Instantiate(TowerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
@@ -244,12 +246,13 @@ public class BoardManager : MonoBehaviour
         {
             do
             {
-                posX = Random.Range(0, 9);
-                posY = Random.Range(0, 6);
+                posX = Random.Range(0, 11);
+                posY = Random.Range(START_P, END_P);
             } while (!grid.isWalkable(posX, posY));
 
             player = Instantiate(PlayerPrefab, new Vector2(posX + transform.position.x, posY + transform.position.y), Quaternion.identity);
             player.transform.SetParent(transform);
+            player.SetGrid(grid);
             player.starMoving(grid, pathManager, unitType);
             players.Add(new CellInfo(posX, posY, unitType));
         }
