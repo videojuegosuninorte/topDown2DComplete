@@ -209,7 +209,7 @@ public class BoardManager : MonoBehaviour
 
             setRandomTower(3, UnitType.TOWER_H);
 
-            towerCountRepeat = 50;
+            towerCountRepeat = 200;
         } else
         {
             recreateTowers();
