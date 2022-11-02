@@ -14,7 +14,7 @@ public class Initialization : MonoBehaviour
 
     private void writeHeader()
     {
-        StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
         writer.Write("R" + ",");
         int t = 0;
         for (int i = 0; i < 11; i++)

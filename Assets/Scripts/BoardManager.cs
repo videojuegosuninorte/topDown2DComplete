@@ -25,13 +25,35 @@ public class BoardManager : MonoBehaviour
 
     private int towerCountRepeat = 50;
 
+    private List<string> towerString = new List<string>() {
+        "000000300000000200030020000000203",
+        "022000000300000030000000200000030",
+        "020320000000003003000000000000200",
+        "032000000003002000000320000000000",
+        "000002000000000000000030223030000",
+        "000030200000300000000000000200230",
+        "000200003000000000300030002002000",
+        "000302000300002002000000000000003",
+        "003200000000000033000000000002200",
+    };
+    private List<string> playerString = new List<string>() {
+        "004540400404044400004400040040400",
+        "044040400404000440004004400404005",
+        "000440440540040400044440040040000",
+        "000040040044400440004044000040445",
+        "000440400000044044045404000400404",
+        "000044044400004044454040040000400",
+        "004400004045440400000044040040404",
+        "000400000544040004040044004400444",
+        "000444400000444500000400404404040"};
+
 
     private void Awake()
     {
         pathManager = new PathManager();
         towers = new List<CellInfo>();
         players = new List<CellInfo>();
-        SetupBoard();
+        setupPieces();
     }
 
     private void FixedUpdate()
@@ -46,27 +68,80 @@ public class BoardManager : MonoBehaviour
         loopCounter++;
     }
 
+    private bool loadSetup()
+    {
+        int unitPos, type;
+        if (towerString.Count == 0)
+        {
+            Debug.Log("loadSetup no data");
+            return false;
+        }
+        Debug.Log("loadSetup start "+ towerString[0]+ " "+ playerString[0]);
+        unitPos = 0;
+        towers.Clear();
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = START_T; j < END_T; j++)
+            {
+                type = int.Parse(towerString[0].Substring(unitPos, 1));
+                unitPos++;
+                switch(type){
+                    case UnitType.TOWER_L:
+                    case UnitType.TOWER_H:
+                        //Debug.Log("loadSetup tower type "+ type);
+                        towers.Add(new CellInfo(i, j, type));
+                        break;
+                    case UnitType.POWER_SOURCE:
+                    case UnitType.NONE:
+                        break;
+                    default:
+                        Debug.Log("loadSetup problem loading towers "+ type+ " "+i+ " "+j);
+                        return false;
+
+                }
+            }
+        }
+        unitPos = 0;
+        players.Clear();
+        for (int i = 0; i < 11; i++)
+        {
+            for (int j = START_P; j < END_P; j++)
+            {
+                type = int.Parse(playerString[0].Substring(unitPos, 1));
+                unitPos++;
+                switch (type)
+                {
+                    case UnitType.INFANTERY_H:
+                    case UnitType.INFANTERY_L:
+                    case UnitType.INFANTERY_K:
+                        //Debug.Log("loadSetup player type " + type);
+                        players.Add(new CellInfo(i, j, type));
+                        break;
+                    case UnitType.NONE:
+                        break;
+                    default:
+                        Debug.Log("loadSetup problem loading players " + type + " " + i + " " + j);
+                        return false;
+
+                }
+            }
+        }
+        Debug.Log("loadSetup ok "+ towers.Count + "  " + players.Count);
+        towerString.RemoveAt(0);
+        playerString.RemoveAt(0);
+
+        if (towerString.Count == 0)
+        {
+            writeEndOfData();
+        }
+        return true;
+
+    }
+
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            restart();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SetupBoard();
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            towers.Clear();
-        }
-
         if (!started)
             return;
-
 
         //Debug.Log("loopCounter " + loopCounter);
 
@@ -92,8 +167,6 @@ public class BoardManager : MonoBehaviour
         //Debug.Log(GetInstanceID() + " " + transform.name);
 
     }
-
-   
 
     private int returnUnitType(int x, int y)
     {
@@ -147,9 +220,16 @@ public class BoardManager : MonoBehaviour
         return true;
     }
 
+    private void writeEndOfData()
+    {
+        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
+        writer.WriteLine("EOD");
+        writer.Close();
+    }
+
     private void writeString(int win)
     {
-        StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
         writer.Write(win.ToString() + ",");
         for (int i = 0; i < 11; i++)
         {
@@ -167,19 +247,10 @@ public class BoardManager : MonoBehaviour
         }
         writer.WriteLine("");
         writer.Close();
-        StreamReader reader = new StreamReader("gameResults.txt");
+        //StreamReader reader = new StreamReader("gameResults2.txt");
         //Print the text from the file
         //Debug.Log(reader.ReadToEnd());
-        reader.Close();
-    }
-
-
-
-    private void SetupBoard()
-    {
-
-        setupPieces();
-        
+        //reader.Close();
     }
 
     private void restart()
@@ -202,25 +273,34 @@ public class BoardManager : MonoBehaviour
 
         pathManager.powerUnitLocation = new Vector2Int((int)powerSource.transform.localPosition.x, (int)powerSource.transform.localPosition.y);
 
-        if (towers.Count == 0 || towerCountRepeat == 0) {
-            towers.Clear();
-
-            setRandomTower(3, UnitType.TOWER_L);
-
-            setRandomTower(3, UnitType.TOWER_H);
-
-            towerCountRepeat = 200;
-        } else
+        if (loadSetup())
         {
             recreateTowers();
-            towerCountRepeat = towerCountRepeat - 1;
+            recreatePlayers();
+            towerCountRepeat = 200;
+        } else { 
+
+            if (towers.Count == 0 || towerCountRepeat == 0) {
+                towers.Clear();
+
+                setRandomTower(3, UnitType.TOWER_L);
+
+                setRandomTower(3, UnitType.TOWER_H);
+
+                towerCountRepeat = 200;
+            } else
+            {
+                recreateTowers();
+                towerCountRepeat = towerCountRepeat - 1;
+            }
+
+            players.Clear();
+
+            setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+
+            setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+
         }
-
-        players.Clear();
-
-        setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
-
-        setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
         if (!verifySetup())
         {
@@ -247,13 +327,10 @@ public class BoardManager : MonoBehaviour
 
     private void decreadPlayer()
     {
-    
     }
 
     private void powerSourceDestroyed()
     {
-        Debug.Log("Power source destroyed");
-        restart();
     }
 
     private void setRandomTower(int towerCount, int unitType)
@@ -282,6 +359,7 @@ public class BoardManager : MonoBehaviour
 
     private void recreateTowers()
     {
+
         foreach (CellInfo cellInfo in towers)
         {
             Tower tower = Instantiate(TowerPrefab, new Vector2(cellInfo.x + transform.position.x, cellInfo.y + transform.position.y), Quaternion.identity);
@@ -291,6 +369,19 @@ public class BoardManager : MonoBehaviour
             tower.SetGrid(grid);
 
             tower.Init(cellInfo.unitType);
+        }
+    }
+
+    private void recreatePlayers()
+    {
+
+        foreach (CellInfo cellInfo in players)
+        {
+            Player player = Instantiate(PlayerPrefab, new Vector2(cellInfo.x + transform.position.x, cellInfo.y + transform.position.y), Quaternion.identity);
+
+            player.transform.SetParent(transform);
+            player.SetGrid(grid);
+            player.starMoving(grid, pathManager, cellInfo.unitType);
         }
     }
 
