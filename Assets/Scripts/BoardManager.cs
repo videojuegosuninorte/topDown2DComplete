@@ -234,35 +234,38 @@ public class BoardManager : MonoBehaviour
 
     private void writeEndOfData()
     {
-        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
+        return;
+        StreamWriter writer = new StreamWriter("gameResults.txt", true);
         writer.WriteLine("EOD");
         writer.Close();
     }
 
     private void writeString(int win)
     {
-        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
+        string concatT, concatP;
+        StreamWriter writer = new StreamWriter("gameResults.txt", true);
         writer.Write(win.ToString() + ",");
+        concatT = "";
         for (int i = 0; i < 11; i++)
         {
             for (int j = START_T; j < END_T; j++)
             {
                 writer.Write(returnUnitType(i, j) + ",");
+                concatT = concatT + returnUnitType(i, j);
             }
         }
+        concatP = "";
         for (int i = 0; i < 11; i++)
         {
             for (int j = START_P; j < END_P; j++)
             {
                 writer.Write(returnUnitType(i, j) + ",");
+                concatP = concatP + returnUnitType(i, j); ;
             }
         }
+        writer.Write(concatT + "," + concatP);
         writer.WriteLine("");
         writer.Close();
-        //StreamReader reader = new StreamReader("gameResults2.txt");
-        //Print the text from the file
-        //Debug.Log(reader.ReadToEnd());
-        //reader.Close();
     }
 
     private void restart()
@@ -299,27 +302,27 @@ public class BoardManager : MonoBehaviour
 
                 setRandomTower(3, UnitType.TOWER_H);
 
-                players.Clear();
+                //players.Clear();
 
-                setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+                //setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-                setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+                //setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
                 towerCountRepeat = 10;
 
-                writeEndOfData();
+                //writeEndOfData();
             } else
             {
                 recreateTowers();
-                recreatePlayers();
+                //recreatePlayers();
                 towerCountRepeat = towerCountRepeat - 1;
             }
 
-            //players.Clear();
+            players.Clear();
 
-            //setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+            setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-            //setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+            setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
         }
 
@@ -344,14 +347,6 @@ public class BoardManager : MonoBehaviour
         }
        
 
-    }
-
-    private void decreadPlayer()
-    {
-    }
-
-    private void powerSourceDestroyed()
-    {
     }
 
     private void setRandomTower(int towerCount, int unitType)

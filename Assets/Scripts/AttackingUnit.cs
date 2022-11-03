@@ -6,12 +6,12 @@ public class AttackingUnit : Unit
 {
     private Vector2 enenyLocation;
     private float bulletSpeed = 20f;
-    private float period = 0.0f;
+    private int period = 0;
     private bool startShotting = false;
 
     public Bullet bulletPrefab;
     public Transform firePoint;
-    public float shootingInterval = 0.3f;
+    public int ShootingInterval = 10;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -47,31 +47,38 @@ public class AttackingUnit : Unit
 
     void FixedUpdate()
     {
-        //if (unitType == UnitType.INFANTERY_L)
-        //{
-        //    startShotting = true;
-        //    enenyLocation = new Vector2(2, 19); ;
-        //    lookAtTarget();
-        //}
+
         VerifyShoot();
     }
 
 
     public void VerifyShoot()
     {
+
+        //if (unitType == UnitType.INFANTERY_L)
+        //{
+        //    startShotting = true;
+        //    enenyLocation = new Vector2(2, 19); ;
+        //    lookAtTarget();
+        //}
+
         if (!startShotting)
             return;
 
-        if (period > shootingInterval)
-        {
-            shoot();
-            period = 0;
-        }
-        period += UnityEngine.Time.deltaTime;
+
+
+        shoot();
     }
 
     private void shoot()
     {
+        if (period < ShootingInterval)
+        {
+            period++;
+            return;
+        }
+        period = 0;
+
         Bullet bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         if (unitType == UnitType.INFANTERY_H || unitType == UnitType.INFANTERY_L)
         {

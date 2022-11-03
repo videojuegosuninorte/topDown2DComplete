@@ -21,6 +21,8 @@ public class Player : AttackingUnit
     public delegate void PlayerDied();
     public static event PlayerDied onDead;
 
+    private int moveDelay = 0;
+
 
     private void OnDestroy()
     {
@@ -52,12 +54,12 @@ public class Player : AttackingUnit
             case UnitType.INFANTERY_L:
                 base.Init(theUnitType, 1, 4, 1, 1);
                 GetComponent<SpriteRenderer>().color = Color.cyan;
-                moveSpeed = 2f;
+                moveSpeed = 35;
                 break;
             case UnitType.INFANTERY_H:
                 GetComponent<SpriteRenderer>().color = Color.yellow;
                 base.Init(theUnitType, 2, 6, 1, 1);
-                moveSpeed = 1f;
+                moveSpeed = 40;
                 break;
             case UnitType.INFANTERY_K:
                 base.Init(theUnitType, 1, 8, 1, 1);
@@ -96,6 +98,12 @@ public class Player : AttackingUnit
 
         if (waypointIndex <= path.Count - 1)
         {
+            if (moveDelay < moveSpeed)
+            {
+                moveDelay++;
+                return;
+            }
+            moveDelay = 0;
             //Debug.Log("Moving to " + path[waypointIndex].transform.position.x.ToString() + " "
             //    + path[waypointIndex].transform.position.y.ToString());
 
@@ -118,9 +126,11 @@ public class Player : AttackingUnit
             }
             // Move player from current waypoint to the next one
             // using MoveTowards method
-            transform.position = Vector2.MoveTowards(transform.position,
-               path[waypointIndex].transform.position,
-               moveSpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position,
+            //   path[waypointIndex].transform.position,
+            //   moveSpeed * Time.fixedDeltaTime);
+
+            transform.position = path[waypointIndex].transform.position;
 
             // If player reaches position of waypoint he walked towards
             // then waypointIndex is increased by 1
