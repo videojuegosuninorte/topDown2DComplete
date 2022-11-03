@@ -25,27 +25,29 @@ public class BoardManager : MonoBehaviour
 
     private int towerCountRepeat = 50;
 
-    private List<string> towerString = new List<string>() {
-        "000000300000000200030020000000203",
-        "022000000300000030000000200000030",
-        "020320000000003003000000000000200",
-        "032000000003002000000320000000000",
-        "000002000000000000000030223030000",
-        "000030200000300000000000000200230",
-        "000200003000000000300030002002000",
-        "000302000300002002000000000000003",
-        "003200000000000033000000000002200",
-    };
-    private List<string> playerString = new List<string>() {
-        "004540400404044400004400040040400",
-        "044040400404000440004004400404005",
-        "000440440540040400044440040040000",
-        "000040040044400440004044000040445",
-        "000440400000044044045404000400404",
-        "000044044400004044454040040000400",
-        "004400004045440400000044040040404",
-        "000400000544040004040044004400444",
-        "000444400000444500000400404404040"};
+    private List<string> towerString = new List<string>();
+    //{
+    //    "000000300000000200030020000000203",
+    //    "022000000300000030000000200000030",
+    //    "020320000000003003000000000000200",
+    //    "032000000003002000000320000000000",
+    //    "000002000000000000000030223030000",
+    //    "000030200000300000000000000200230",
+    //    "000200003000000000300030002002000",
+    //    "000302000300002002000000000000003",
+    //    "003200000000000033000000000002200",
+    //};
+    private List<string> playerString = new List<string>();
+    //{
+    //    "004540400404044400004400040040400",
+    //    "044040400404000440004004400404005",
+    //    "000440440540040400044440040040000",
+    //    "000040040044400440004044000040445",
+    //    "000440400000044044045404000400404",
+    //    "000044044400004044454040040000400",
+    //    "004400004045440400000044040040404",
+    //    "000400000544040004040044004400444",
+    //    "000444400000444500000400404404040"};
 
 
     private void Awake()
@@ -55,7 +57,7 @@ public class BoardManager : MonoBehaviour
         players = new List<CellInfo>();
         setupPieces();
     }
-
+    /*
     private void FixedUpdate()
     {
         if (loopCounter > 2000)
@@ -67,6 +69,7 @@ public class BoardManager : MonoBehaviour
 
         loopCounter++;
     }
+    */
 
     private bool loadSetup()
     {
@@ -138,10 +141,19 @@ public class BoardManager : MonoBehaviour
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!started)
             return;
+
+        if (loopCounter > 2000)
+        {
+            Debug.Log("loopCounter RESTART");
+            loopCounter = 0;
+            restart();
+        }
+
+        loopCounter++;
 
         //Debug.Log("loopCounter " + loopCounter);
 
@@ -287,18 +299,27 @@ public class BoardManager : MonoBehaviour
 
                 setRandomTower(3, UnitType.TOWER_H);
 
-                towerCountRepeat = 200;
+                players.Clear();
+
+                setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+
+                setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+
+                towerCountRepeat = 10;
+
+                writeEndOfData();
             } else
             {
                 recreateTowers();
+                recreatePlayers();
                 towerCountRepeat = towerCountRepeat - 1;
             }
 
-            players.Clear();
+            //players.Clear();
 
-            setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+            //setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-            setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+            //setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
         }
 

@@ -15,7 +15,7 @@ public class AttackingUnit : Unit
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //Debug.Log("OnTriggerStay2D");
+
         if (collision.gameObject.GetComponent<Unit>() != null) {
             Unit unit = collision.gameObject.GetComponent<Unit>();
             //Debug.Log("OnTriggerStay2D with Unit "+ printUnitType()+ " "+ unit.printUnitType());
@@ -31,6 +31,7 @@ public class AttackingUnit : Unit
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+
         startShotting = false; 
     }
 
@@ -44,7 +45,19 @@ public class AttackingUnit : Unit
         rb.rotation = angle;
     }
 
-    void Update()
+    void FixedUpdate()
+    {
+        //if (unitType == UnitType.INFANTERY_L)
+        //{
+        //    startShotting = true;
+        //    enenyLocation = new Vector2(2, 19); ;
+        //    lookAtTarget();
+        //}
+        VerifyShoot();
+    }
+
+
+    public void VerifyShoot()
     {
         if (!startShotting)
             return;
@@ -60,7 +73,12 @@ public class AttackingUnit : Unit
     private void shoot()
     {
         Bullet bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (unitType == UnitType.INFANTERY_H || unitType == UnitType.INFANTERY_L)
+        {
+            bullet.GetComponent<SpriteRenderer>().color = Color.blue;
+        }
         bullet.Init(unitType,attack);
+        Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * bulletSpeed, ForceMode2D.Impulse);
     }
 

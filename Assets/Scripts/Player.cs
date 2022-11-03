@@ -10,7 +10,7 @@ public class Player : AttackingUnit
     private float moveSpeed = 2f;
     public Vector2 GetPosition => transform.localPosition;
     private bool startMoving = false;
-    private Grid grid;
+    //private Grid grid;
     private bool changedCells = false;
     private PathManager pathManager;
 
@@ -20,7 +20,7 @@ public class Player : AttackingUnit
 
     public delegate void PlayerDied();
     public static event PlayerDied onDead;
-    private int staticCounter = 0;
+
 
     private void OnDestroy()
     {
@@ -33,11 +33,11 @@ public class Player : AttackingUnit
     void FixedUpdate()
     {
         if (startMoving)
-            Move();
-        else
         {
-            staticCounter = 0;
+            Move();
         }
+
+        VerifyShoot();
     }
 
     public void starMoving(Grid grid, PathManager path, int theUnitType)

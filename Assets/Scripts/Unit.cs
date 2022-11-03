@@ -110,6 +110,10 @@ public class Unit : MonoBehaviour
                     Destroy(this.gameObject);
                 }
             }
+            else
+            {
+               // Debug.Log(unitType+ " FFF");
+            }
         }
     }
 
