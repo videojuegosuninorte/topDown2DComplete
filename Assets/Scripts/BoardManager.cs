@@ -292,7 +292,7 @@ public class BoardManager : MonoBehaviour
         {
             recreateTowers();
             recreatePlayers();
-            towerCountRepeat = 200;
+            towerCountRepeat = 50;
         } else { 
 
             if (towers.Count == 0 || towerCountRepeat == 0) {
