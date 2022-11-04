@@ -23,34 +23,26 @@ public class BoardManager : MonoBehaviour
     private Grid grid;
     private Player player;
 
-    private int towerCountRepeat = 50;
+    private int towerCountRepeat = 10;
 
     private List<string> towerString = new List<string>();
     //{
-    //    "000000300000000200030020000000203",
-    //    "022000000300000030000000200000030",
-    //    "020320000000003003000000000000200",
-    //    "032000000003002000000320000000000",
-    //    "000002000000000000000030223030000",
-    //    "000030200000300000000000000200230",
-    //    "000200003000000000300030002002000",
-    //    "000302000300002002000000000000003",
-    //    "003200000000000033000000000002200",
+    //    "300000000020000000003000002200003",
+    //    "020000030200030000000002300000000",
+    //    "000300000000000200032300020000000",
+    //    "330000000200020300000000200000000",
+       
     //};
-    private List<string> playerString = new List<string>();
+private List<string> playerString = new List<string>();
     //{
-    //    "004540400404044400004400040040400",
-    //    "044040400404000440004004400404005",
-    //    "000440440540040400044440040040000",
-    //    "000040040044400440004044000040445",
-    //    "000440400000044044045404000400404",
-    //    "000044044400004044454040040000400",
-    //    "004400004045440400000044040040404",
-    //    "000400000544040004040044004400444",
-    //    "000444400000444500000400404404040"};
+    //    "000044440040444404000440004000500",
+    //    "000404000440000400400440004444045",
+    //    "044040004440004004000004000404445",
+    //    "000000440400000440450444044404000",
+    //    };
 
 
-    private void Awake()
+private void Awake()
     {
         pathManager = new PathManager();
         towers = new List<CellInfo>();
@@ -79,7 +71,7 @@ public class BoardManager : MonoBehaviour
             Debug.Log("loadSetup no data");
             return false;
         }
-        Debug.Log("loadSetup start "+ towerString[0]+ " "+ playerString[0]);
+        Debug.Log("loadSetup start "+ towerString.Count+ " "+ playerString.Count);
         unitPos = 0;
         towers.Clear();
         for (int i = 0; i < 11; i++)
@@ -234,8 +226,8 @@ public class BoardManager : MonoBehaviour
 
     private void writeEndOfData()
     {
-        return;
-        StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        
+        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
         writer.WriteLine("EOD");
         writer.Close();
     }
@@ -243,7 +235,7 @@ public class BoardManager : MonoBehaviour
     private void writeString(int win)
     {
         string concatT, concatP;
-        StreamWriter writer = new StreamWriter("gameResults.txt", true);
+        StreamWriter writer = new StreamWriter("gameResults2.txt", true);
         writer.Write(win.ToString() + ",");
         concatT = "";
         for (int i = 0; i < 11; i++)
@@ -302,27 +294,27 @@ public class BoardManager : MonoBehaviour
 
                 setRandomTower(3, UnitType.TOWER_H);
 
-                //players.Clear();
+                players.Clear();
 
-                //setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+                setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-                //setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+                setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
                 towerCountRepeat = 10;
 
-                //writeEndOfData();
+                writeEndOfData();
             } else
             {
                 recreateTowers();
-                //recreatePlayers();
+                recreatePlayers();
                 towerCountRepeat = towerCountRepeat - 1;
             }
 
-            players.Clear();
+            //players.Clear();
 
-            setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
+            //setRandomPlayers(13, pathManager, UnitType.INFANTERY_L);
 
-            setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
+            //setRandomPlayers(1, pathManager, UnitType.INFANTERY_H);
 
         }
 
